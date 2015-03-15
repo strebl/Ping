@@ -27,7 +27,7 @@ class Ping {
 
   private $host;
   private $ttl;
-  private $wait = $wait;
+  private $wait;
   private $port = 80;
   private $data = 'Ping';
 
