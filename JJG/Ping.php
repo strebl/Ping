@@ -205,6 +205,9 @@ class Ping {
     }
     // Exec string for UNIX-based systems (Mac, Linux).
     else {
+      if (strtoupper(substr(PHP_OS, 0, 5)) !== 'LINUX') {
+        $wait = $wait * 1000;
+      }
       // -n = numeric output; -c = number of pings; -t = ttl.
       $exec_string = 'ping -n -c 1 -t ' . $ttl . ' -W ' . $wait . ' ' . $host;
       $host_type = 'unix';
