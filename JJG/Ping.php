@@ -27,6 +27,7 @@ class Ping {
 
   private $host;
   private $ttl;
+  private $wait = $wait;
   private $port = 80;
   private $data = 'Ping';
 
@@ -51,13 +52,14 @@ class Ping {
    *
    * @throws \Exception if the host is not set.
    */
-  public function __construct($host, $ttl = 255) {
+  public function __construct($host, $ttl = 255, $wait = 10) {
     if (!isset($host)) {
       throw new \Exception("Error: Host name not supplied.");
     }
 
     $this->host = $host;
     $this->ttl = $ttl;
+    $this->wait = $wait;
   }
 
   /**
@@ -98,6 +100,26 @@ class Ping {
    */
   public function getHost() {
     return $this->host;
+  }
+
+  /**
+   * Set the wait time.
+   *
+   * @param string $wait
+   *   wait name or IP address.
+   */
+  public function setwait($wait) {
+    $this->wait = $wait;
+  }
+
+  /**
+   * Get the wait time.
+   *
+   * @return string
+   *   The current wait time for Ping.
+   */
+  public function getwait() {
+    return $this->wait;
   }
 
   /**
@@ -172,17 +194,19 @@ class Ping {
 
     $ttl = escapeshellcmd($this->ttl);
     $host = escapeshellcmd($this->host);
+    $wait = escapeshellcmd($this->wait);
     // Exec string for Windows-based systems.
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+      $wait = $wait * 1000;
       // -n = number of pings; -i = ttl.
-      $exec_string = 'ping -n 1 -i ' . $ttl . ' ' . $host;
+      $exec_string = 'ping -n 1 -i ' . $ttl . ' -w ' . $wait . ' ' . $host;
       $host_type = 'windows';
       $time_param = 4;
     }
     // Exec string for UNIX-based systems (Mac, Linux).
     else {
       // -n = numeric output; -c = number of pings; -t = ttl.
-      $exec_string = 'ping -n -c 1 -t ' . $ttl . ' ' . $host;
+      $exec_string = 'ping -n -c 1 -t ' . $ttl . ' -W ' . $wait . ' ' . $host;
       $host_type = 'unix';
       $time_param = 6;
     }
