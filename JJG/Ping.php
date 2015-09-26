@@ -214,7 +214,7 @@ class Ping
             $wait = $wait * 1000;
 
             // -n = number of pings; -i = ttl.
-            $exec_string = sprintf('ping -n 1 -i %c -w %c %s', $ttl, $wait, $host);
+            $exec_string = sprintf('ping -n 1 -i %d -w %d %s', $ttl, $wait, $host);
         }
         // Exec string for UNIX-based systems (Mac, Linux).
         else {
@@ -223,7 +223,7 @@ class Ping
             }
 
             // -n = numeric output; -c = number of pings; -t = ttl.
-            $exec_string = sprintf('ping -n  -c 1 -t %c -W %c %s', $ttl, $wait, $host);
+            $exec_string = sprintf('ping -n  -c 1 -t %d -W %d %s', $ttl, $wait, $host);
         }
         exec($exec_string, $output, $return);
 
