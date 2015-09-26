@@ -17,7 +17,7 @@
  *   $latency = $ping->ping();
  * @endcode
  *
- * @version 1.0.2
+ * @version 1.0.3
  * @author Jeff Geerling.
  */
 
@@ -200,8 +200,6 @@ class Ping {
       $wait = $wait * 1000;
       // -n = number of pings; -i = ttl.
       $exec_string = 'ping -n 1 -i ' . $ttl . ' -w ' . $wait . ' ' . $host;
-      $host_type = 'windows';
-      $time_param = 4;
     }
     // Exec string for UNIX-based systems (Mac, Linux).
     else {
@@ -210,30 +208,21 @@ class Ping {
       }
       // -n = numeric output; -c = number of pings; -t = ttl.
       $exec_string = 'ping -n -c 1 -t ' . $ttl . ' -W ' . $wait . ' ' . $host;
-      $host_type = 'unix';
-      $time_param = 6;
     }
     exec($exec_string, $output, $return);
 
-    // Strip empty lines (make results more uniform across OS versions).
-    $output = array_filter($output);
+    // Strip empty lines and reorder the indexes from 0 (to make results more
+    // uniform across OS versions).
+    $output = array_values(array_filter($output));
 
     // If the result line in the output is not empty, parse it.
     if (!empty($output[1])) {
-      $array = explode(' ', $output[1]);
-      // If the time parameter is missing, the host is unreachable.
-      if (!isset($array[$time_param])) {
-        $latency = false;
-      }
-      else {
-        // Remove 'time=' from latency stat.
-        $latency = str_replace('time=', '', $array[$time_param]);
-        // If on a windows machine, also remove the 'ms'.
-        if ($host_type == 'windows') {
-          $latency = str_replace('ms', '', $latency);
-        }
-        // Convert latency to microseconds.
-        $latency = round($latency);
+      // Search for a 'time' value in the result line.
+      $response = preg_match("/time(?:=|<)(?<time>[\.0-9]+)(?:|\s)ms/", $output[1], $matches);
+
+      // If there's a result and it's greater than 0, return the latency.
+      if ($response > 0 && isset($matches['time'])) {
+        $latency = round($matches['time']);
       }
     }
 
