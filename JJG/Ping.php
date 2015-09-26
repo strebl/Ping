@@ -1,27 +1,27 @@
 <?php
 
 /**
-* Ping for PHP.
-*
-* This class pings a host.
-*
-* The ping() method pings a server using 'exec', 'socket', or 'fsockopen', and
-* and returns FALSE if the server is unreachable within the given ttl/timeout,
-* or the latency in milliseconds if the server is reachable.
-*
-* Quick Start:
-*
-* @code
-*   include 'path/to/Ping/JJG/Ping.php';
-*   use \JJG\Ping as Ping;
-*   $ping = new Ping('www.example.com');
-*   $latency = $ping->ping();
-* @endcode
-*
-* @version 1.0.3
-*
-* @author Jeff Geerling.
-*/
+ * Ping for PHP.
+ *
+ * This class pings a host.
+ *
+ * The ping() method pings a server using 'exec', 'socket', or 'fsockopen', and
+ * and returns FALSE if the server is unreachable within the given ttl/timeout,
+ * or the latency in milliseconds if the server is reachable.
+ *
+ * Quick Start:
+ *
+ * @code
+ *   include 'path/to/Ping/JJG/Ping.php';
+ *   use \JJG\Ping as Ping;
+ *   $ping = new Ping('www.example.com');
+ *   $latency = $ping->ping();
+ * @endcode
+ *
+ * @version 1.0.3
+ *
+ * @author Jeff Geerling.
+ */
 
 namespace JJG;
 
@@ -34,26 +34,26 @@ class Ping
     private $data = 'Ping';
 
     /**
-    * Called when the Ping object is created.
-    *
-    * @param string $host
-    *   The host to be pinged.
-    * @param int $ttl
-    *   Time-to-live (TTL) (You may get a 'Time to live exceeded' error if this
-    *   value is set too low. The TTL value indicates the scope or range in which
-    *   a packet may be forwarded. By convention:
-    *     - 0 = same host
-    *     - 1 = same subnet
-    *     - 32 = same site
-    *     - 64 = same region
-    *     - 128 = same continent
-    *     - 255 = unrestricted
-    *   The TTL is also used as a general 'timeout' value for fsockopen(), so if
-    *   you are using that method, you might want to set a default of 5-10 sec to
-    *   avoid blocking network connections.
-    *
-    * @throws \Exception if the host is not set.
-    */
+     * Called when the Ping object is created.
+     *
+     * @param string $host
+     *                     The host to be pinged.
+     * @param int    $ttl
+     *                     Time-to-live (TTL) (You may get a 'Time to live exceeded' error if this
+     *                     value is set too low. The TTL value indicates the scope or range in which
+     *                     a packet may be forwarded. By convention:
+     *                     - 0 = same host
+     *                     - 1 = same subnet
+     *                     - 32 = same site
+     *                     - 64 = same region
+     *                     - 128 = same continent
+     *                     - 255 = unrestricted
+     *                     The TTL is also used as a general 'timeout' value for fsockopen(), so if
+     *                     you are using that method, you might want to set a default of 5-10 sec to
+     *                     avoid blocking network connections.
+     *
+     * @throws \Exception if the host is not set.
+     */
     public function __construct($host, $ttl = 255, $wait = 10)
     {
         if (!isset($host)) {
@@ -66,111 +66,111 @@ class Ping
     }
 
     /**
-    * Set the ttl (in hops).
-    *
-    * @param int $ttl
-    *   TTL in hops.
-    */
+     * Set the ttl (in hops).
+     *
+     * @param int $ttl
+     *                 TTL in hops.
+     */
     public function setTtl($ttl)
     {
         $this->ttl = $ttl;
     }
 
     /**
-    * Get the ttl.
-    *
-    * @return int
-    *   The current ttl for Ping.
-    */
+     * Get the ttl.
+     *
+     * @return int
+     *             The current ttl for Ping.
+     */
     public function getTtl()
     {
         return $this->ttl;
     }
 
     /**
-    * Set the host.
-    *
-    * @param string $host
-    *   Host name or IP address.
-    */
+     * Set the host.
+     *
+     * @param string $host
+     *                     Host name or IP address.
+     */
     public function setHost($host)
     {
         $this->host = $host;
     }
 
     /**
-    * Get the host.
-    *
-    * @return string
-    *   The current hostname for Ping.
-    */
+     * Get the host.
+     *
+     * @return string
+     *                The current hostname for Ping.
+     */
     public function getHost()
     {
         return $this->host;
     }
 
     /**
-    * Set the wait time.
-    *
-    * @param string $wait
-    *   wait name or IP address.
-    */
+     * Set the wait time.
+     *
+     * @param string $wait
+     *                     wait name or IP address.
+     */
     public function setwait($wait)
     {
         $this->wait = $wait;
     }
 
     /**
-    * Get the wait time.
-    *
-    * @return string
-    *   The current wait time for Ping.
-    */
+     * Get the wait time.
+     *
+     * @return string
+     *                The current wait time for Ping.
+     */
     public function getwait()
     {
         return $this->wait;
     }
 
     /**
-    * Set the port (only used for fsockopen method).
-    *
-    * Since regular pings use ICMP and don't need to worry about the concept of
-    * 'ports', this is only used for the fsockopen method, which pings servers by
-    * checking port 80 (by default).
-    *
-    * @param int $port
-    *   Port to use for fsockopen ping (defaults to 80 if not set).
-    */
+     * Set the port (only used for fsockopen method).
+     *
+     * Since regular pings use ICMP and don't need to worry about the concept of
+     * 'ports', this is only used for the fsockopen method, which pings servers by
+     * checking port 80 (by default).
+     *
+     * @param int $port
+     *                  Port to use for fsockopen ping (defaults to 80 if not set).
+     */
     public function setPort($port)
     {
         $this->port = $port;
     }
 
     /**
-    * Get the port (only used for fsockopen method).
-    *
-    * @return int
-    *   The port used by fsockopen pings.
-    */
+     * Get the port (only used for fsockopen method).
+     *
+     * @return int
+     *             The port used by fsockopen pings.
+     */
     public function getPort()
     {
         return $this->port;
     }
 
     /**
-    * Ping a host.
-    *
-    * @param string $method
-    *   Method to use when pinging:
-    *     - exec (default): Pings through the system ping command. Fast and
-    *       robust, but a security risk if you pass through user-submitted data.
-    *     - fsockopen: Pings a server on port 80.
-    *     - socket: Creates a RAW network socket. Only usable in some
-    *       environments, as creating a SOCK_RAW socket requires root privileges.
-    *
-    * @return mixed
-    *   Latency as integer, in ms, if host is reachable or FALSE if host is down.
-    */
+     * Ping a host.
+     *
+     * @param string $method
+     *                       Method to use when pinging:
+     *                       - exec (default): Pings through the system ping command. Fast and
+     *                       robust, but a security risk if you pass through user-submitted data.
+     *                       - fsockopen: Pings a server on port 80.
+     *                       - socket: Creates a RAW network socket. Only usable in some
+     *                       environments, as creating a SOCK_RAW socket requires root privileges.
+     *
+     * @return mixed
+     *               Latency as integer, in ms, if host is reachable or FALSE if host is down.
+     */
     public function ping($method = 'exec')
     {
         $latency = false;
@@ -194,13 +194,13 @@ class Ping
     }
 
     /**
-    * The exec method uses the possibly insecure exec() function, which passes
-    * the input to the system. This is potentially VERY dangerous if you pass in
-    * any user-submitted data. Be SURE you sanitize your inputs!
-    *
-    * @return int
-    *   Latency, in ms.
-    */
+     * The exec method uses the possibly insecure exec() function, which passes
+     * the input to the system. This is potentially VERY dangerous if you pass in
+     * any user-submitted data. Be SURE you sanitize your inputs!
+     *
+     * @return int
+     *             Latency, in ms.
+     */
     private function pingExec()
     {
         $latency = false;
@@ -246,13 +246,13 @@ class Ping
     }
 
     /**
-    * The fsockopen method simply tries to reach the host on a port. This method
-    * is often the fastest, but not necessarily the most reliable. Even if a host
-    * doesn't respond, fsockopen may still make a connection.
-    *
-    * @return int
-    *   Latency, in ms.
-    */
+     * The fsockopen method simply tries to reach the host on a port. This method
+     * is often the fastest, but not necessarily the most reliable. Even if a host
+     * doesn't respond, fsockopen may still make a connection.
+     *
+     * @return int
+     *             Latency, in ms.
+     */
     private function pingFsockopen()
     {
         $start = microtime(true);
@@ -271,15 +271,15 @@ class Ping
     }
 
     /**
-    * The socket method uses raw network packet data to try sending an ICMP ping
-    * packet to a server, then measures the response time. Using this method
-    * requires the script to be run with root privileges, though, so this method
-    * only works reliably on Windows systems and on Linux servers where the
-    * script is not being run as a web user.
-    *
-    * @return int
-    *   Latency, in ms.
-    */
+     * The socket method uses raw network packet data to try sending an ICMP ping
+     * packet to a server, then measures the response time. Using this method
+     * requires the script to be run with root privileges, though, so this method
+     * only works reliably on Windows systems and on Linux servers where the
+     * script is not being run as a web user.
+     *
+     * @return int
+     *             Latency, in ms.
+     */
     private function pingSocket()
     {
         // Create a package.
@@ -318,7 +318,7 @@ class Ping
         } else {
             $latency = false;
         }
-        
+
         // Close the socket.
         socket_close($socket);
 
@@ -326,14 +326,14 @@ class Ping
     }
 
     /**
-    * Calculate a checksum.
-    *
-    * @param string $data
-    *   Data for which checksum will be calculated.
-    *
-    * @return string
-    *   Binary string checksum of $data.
-    */
+     * Calculate a checksum.
+     *
+     * @param string $data
+     *                     Data for which checksum will be calculated.
+     *
+     * @return string
+     *                Binary string checksum of $data.
+     */
     private function calculateChecksum($data)
     {
         if (strlen($data) % 2) {
