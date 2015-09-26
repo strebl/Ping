@@ -223,7 +223,7 @@ class Ping
             }
 
             // -n = numeric output; -c = number of pings; -t = ttl.
-            $exec_string = sprintf('ping -n  -c 1 -t %d -W %d %s', $ttl, $wait, $host);
+            $exec_string = sprintf('ping -n -c 1 -t %d -W %d %s', $ttl, $wait, $host);
         }
         exec($exec_string, $output, $return);
 
