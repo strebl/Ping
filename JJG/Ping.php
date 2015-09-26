@@ -199,7 +199,7 @@ class Ping {
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
       $wait = $wait * 1000;
       // -n = number of pings; -i = ttl.
-      $exec_string = 'ping -n 1 -i ' . $ttl . ' -w ' . $wait . ' ' . $host;
+      $exec_string = sprintf('ping -n 1 -i %c -w %c %s', $ttl, $wait, $host);
     }
     // Exec string for UNIX-based systems (Mac, Linux).
     else {
@@ -207,7 +207,7 @@ class Ping {
         $wait = $wait * 1000;
       }
       // -n = numeric output; -c = number of pings; -t = ttl.
-      $exec_string = 'ping -n -c 1 -t ' . $ttl . ' -W ' . $wait . ' ' . $host;
+      $exec_string = sprintf('ping -n  -c 1 -t %c -W %c %s', $ttl, $wait, $host);
     }
     exec($exec_string, $output, $return);
 
